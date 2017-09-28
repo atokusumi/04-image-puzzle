@@ -67,12 +67,15 @@ def randomize_puzzle(count,puzzle):
 
 def draw_puzzle(puzzle):
 	''' draw the puzzle on the screen '''
-
-
+		screen.fill((0,0,0))
+		for i in range(len(puzzle)):
+				puzzle[i].draw_square(pygame.drew,screen)
+		pygame.display.flip()
+		
 ''' Main code body '''
 #colors are in RGB format (0–255 for each value represents the intensity of the mixture of red, green, and blue, respectively)
 #If you need pretty colors, I like the library at https://yeun.github.io/open-color/
-colors = [(255,0,0)]	
+colors = [(255,0,0)(232,247,255)(103,65,217)(54,79,199)(169,227,75)(250,176,5)(150,242,215)(8,127,9)(235,251,238)(255,249,219)(217,72,15)(248,240,252)(218,119,242)(227,250,252)(92,148,13)(230,119,0)	
 
 #build puzzle
 puzzle = []
