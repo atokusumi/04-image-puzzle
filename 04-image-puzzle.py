@@ -80,6 +80,21 @@ colors = [(255,0,0)(232,247,255)(103,65,217)(54,79,199)(169,227,75)(250,176,5)(1
 #build puzzle
 puzzle = []
 count = 0
+for j in range(colums):
+		for i in range(raws):
+				temp = Square(i, j, width / columns, height / rows)
+				temp.color = colors[count % len(colors)]
+				count = count + 1
+				temp.label = str(count)
+				puzzle.append(temp)
+puzzle[len(puzzle)-1].visible = False
+
+puzzle = randomize_puzzle(500,puzzle)
+
+font = pygame.font.SysFont("arial",64)
+
+screen = pygame.display.set_mode(size)
+
 #instantiate an object. It is initialized with a x/y which-square position and a width/height (in pixels)
 puzzle.append(Square(0,0,width/columns,height/rows))
 puzzle[0].color = colors[count % len(colors)]
@@ -90,7 +105,33 @@ puzzle = randomize_puzzle(500,puzzle)
 
 moves = 0
 draw_puzzle(puzzle)
-
+winning = False
+while not winning:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT: sys.exit()
+		# handle MOUSEBUTTONUP
+		if event.type == pygame.MOUSEBUTTONUP:
+			pos = pygame.mouse.get_pos()
+			xy = calculate_xy(pos,puzzle)
+			print(xy)
+			for e in puzzle:
+				if not e.visible:
+					if e.check_proximity(xy):
+						for c in puzzle:
+							if c.position == xy:
+								c.swap_position(e.position)
+								e.swap_position(xy)
+								draw_puzzle(puzzle)
+								moves = moves + 1
+			winning = True
+			for i in range(len(puzzle)):
+				xy = (x,y) = (i % columns, i // rows)
+				if puzzle[i].position != xy:
+					winning = False
+			if winning:
+				for e in puzzle:
+					e.visible = True
+print('You won in only ' + str(moves) + ' moves! Good job!')
 ''' The Game Loop '''
 while True:
 	for event in pygame.event.get():
